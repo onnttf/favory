@@ -1,0 +1,448 @@
+{
+  "collections": [
+    {
+      "id": "c0000000-0000-4000-a000-000000000001",
+      "name": "Development",
+      "color": "#3b82f6",
+      "parentId": null,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "c0000000-0000-4000-a000-000000000002",
+      "name": "Design",
+      "color": "#8b5cf6",
+      "parentId": null,
+      "createdAt": "2026-01-02T00:00:00.000Z"
+    },
+    {
+      "id": "c0000000-0000-4000-a000-000000000003",
+      "name": "Reading",
+      "color": "#10b981",
+      "parentId": null,
+      "createdAt": "2026-01-03T00:00:00.000Z"
+    },
+    {
+      "id": "c0000000-0000-4000-a000-000000000004",
+      "name": "Tools",
+      "color": "#f59e0b",
+      "parentId": null,
+      "createdAt": "2026-01-04T00:00:00.000Z"
+    },
+    {
+      "id": "c0000000-0000-4000-a000-000000000005",
+      "name": "AI & ML",
+      "color": "#ef4444",
+      "parentId": "c0000000-0000-4000-a000-000000000001",
+      "createdAt": "2026-01-05T00:00:00.000Z"
+    },
+    {
+      "id": "b3429225-4831-4efa-a3dc-d5e173dc251d",
+      "name": "kk",
+      "color": "#3b82f6",
+      "parentId": null,
+      "createdAt": "2026-03-04T12:39:12.654Z"
+    }
+  ],
+  "bookmarks": [
+    {
+      "id": "b0000000-0000-4000-a000-000000000001",
+      "url": "https://nextjs.org/docs",
+      "title": "Next.js Documentation",
+      "description": "The React Framework for the Web — build full-stack web apps with the latest Next.js features.",
+      "tags": [
+        "nextjs",
+        "react",
+        "docs"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000001",
+      "favicon": "https://www.google.com/s2/favicons?domain=nextjs.org&sz=64",
+      "sort": 0,
+      "createdAt": "2026-02-01T10:00:00.000Z",
+      "updatedAt": "2026-02-01T10:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000002",
+      "url": "https://tailwindcss.com/docs",
+      "title": "Tailwind CSS Docs",
+      "description": "A utility-first CSS framework for rapidly building custom user interfaces.",
+      "tags": [
+        "css",
+        "tailwind",
+        "docs"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000002",
+      "favicon": "https://www.google.com/s2/favicons?domain=tailwindcss.com&sz=64",
+      "sort": 1,
+      "createdAt": "2026-02-03T09:00:00.000Z",
+      "updatedAt": "2026-02-03T09:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000003",
+      "url": "https://ui.shadcn.com",
+      "title": "shadcn/ui",
+      "description": "Beautifully designed components built with Radix UI and Tailwind CSS.",
+      "tags": [
+        "components",
+        "ui",
+        "react"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000002",
+      "favicon": "https://www.google.com/s2/favicons?domain=ui.shadcn.com&sz=64",
+      "sort": 2,
+      "createdAt": "2026-02-05T14:30:00.000Z",
+      "updatedAt": "2026-02-05T14:30:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000004",
+      "url": "https://tanstack.com/table",
+      "title": "TanStack Table",
+      "description": "Headless UI for building powerful tables & datagrids.",
+      "tags": [
+        "table",
+        "react",
+        "headless"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000001",
+      "favicon": "https://www.google.com/s2/favicons?domain=tanstack.com&sz=64",
+      "sort": 3,
+      "createdAt": "2026-02-07T11:00:00.000Z",
+      "updatedAt": "2026-02-07T11:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000005",
+      "url": "https://www.typescriptlang.org/docs",
+      "title": "TypeScript Handbook",
+      "description": "The TypeScript Handbook is intended to be a comprehensive document for understanding TypeScript.",
+      "tags": [
+        "typescript",
+        "docs",
+        "javascript"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000001",
+      "favicon": "https://www.google.com/s2/favicons?domain=typescriptlang.org&sz=64",
+      "sort": 4,
+      "createdAt": "2026-02-09T16:00:00.000Z",
+      "updatedAt": "2026-02-09T16:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000006",
+      "url": "https://www.figma.com",
+      "title": "Figma",
+      "description": "The collaborative interface design tool.",
+      "tags": [
+        "design",
+        "ui",
+        "prototyping"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000002",
+      "favicon": "https://www.google.com/s2/favicons?domain=figma.com&sz=64",
+      "sort": 5,
+      "createdAt": "2026-02-10T09:00:00.000Z",
+      "updatedAt": "2026-02-10T09:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000007",
+      "url": "https://react.dev",
+      "title": "React Documentation",
+      "description": "The library for web and native user interfaces.",
+      "tags": [
+        "react",
+        "docs",
+        "javascript"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000001",
+      "favicon": "https://www.google.com/s2/favicons?domain=react.dev&sz=64",
+      "sort": 6,
+      "createdAt": "2026-02-12T10:00:00.000Z",
+      "updatedAt": "2026-02-12T10:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000008",
+      "url": "https://github.com",
+      "title": "GitHub",
+      "description": "Where the world builds software. Millions of developers use GitHub.",
+      "tags": [
+        "git",
+        "code",
+        "collaboration"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000004",
+      "favicon": "https://www.google.com/s2/favicons?domain=github.com&sz=64",
+      "sort": 7,
+      "createdAt": "2026-02-14T08:00:00.000Z",
+      "updatedAt": "2026-02-14T08:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000009",
+      "url": "https://vercel.com",
+      "title": "Vercel",
+      "description": "Develop. Preview. Ship. The best place to deploy web apps.",
+      "tags": [
+        "deployment",
+        "hosting",
+        "devops"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000004",
+      "favicon": "https://www.google.com/s2/favicons?domain=vercel.com&sz=64",
+      "sort": 8,
+      "createdAt": "2026-02-16T12:00:00.000Z",
+      "updatedAt": "2026-02-16T12:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000010",
+      "url": "https://openai.com",
+      "title": "OpenAI",
+      "description": "AI research and deployment company building safe and beneficial AI.",
+      "tags": [
+        "ai",
+        "gpt",
+        "llm"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000005",
+      "favicon": "https://www.google.com/s2/favicons?domain=openai.com&sz=64",
+      "sort": 9,
+      "createdAt": "2026-02-18T15:00:00.000Z",
+      "updatedAt": "2026-02-18T15:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000011",
+      "url": "https://huggingface.co",
+      "title": "Hugging Face",
+      "description": "The AI community building the future — models, datasets, and apps.",
+      "tags": [
+        "ai",
+        "ml",
+        "models"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000005",
+      "favicon": "https://www.google.com/s2/favicons?domain=huggingface.co&sz=64",
+      "sort": 10,
+      "createdAt": "2026-02-20T10:00:00.000Z",
+      "updatedAt": "2026-02-20T10:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000012",
+      "url": "https://zod.dev",
+      "title": "Zod",
+      "description": "TypeScript-first schema validation with static type inference.",
+      "tags": [
+        "typescript",
+        "validation",
+        "schema"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000001",
+      "favicon": "https://www.google.com/s2/favicons?domain=zod.dev&sz=64",
+      "sort": 11,
+      "createdAt": "2026-02-21T11:00:00.000Z",
+      "updatedAt": "2026-02-21T11:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000013",
+      "url": "https://recharts.org",
+      "title": "Recharts",
+      "description": "A composable charting library built on React components.",
+      "tags": [
+        "charts",
+        "react",
+        "visualization"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000001",
+      "favicon": "https://www.google.com/s2/favicons?domain=recharts.org&sz=64",
+      "sort": 12,
+      "createdAt": "2026-02-22T14:00:00.000Z",
+      "updatedAt": "2026-02-22T14:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000014",
+      "url": "https://www.prisma.io",
+      "title": "Prisma",
+      "description": "Next-generation Node.js and TypeScript ORM for databases.",
+      "tags": [
+        "orm",
+        "database",
+        "typescript"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000001",
+      "favicon": "https://www.google.com/s2/favicons?domain=prisma.io&sz=64",
+      "sort": 13,
+      "createdAt": "2026-02-23T10:00:00.000Z",
+      "updatedAt": "2026-02-23T10:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000015",
+      "url": "https://css-tricks.com",
+      "title": "CSS-Tricks",
+      "description": "Tips, tricks, and techniques on using CSS.",
+      "tags": [
+        "css",
+        "design",
+        "frontend"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000003",
+      "favicon": "https://www.google.com/s2/favicons?domain=css-tricks.com&sz=64",
+      "sort": 14,
+      "createdAt": "2026-02-24T09:00:00.000Z",
+      "updatedAt": "2026-02-24T09:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000016",
+      "url": "https://developer.mozilla.org",
+      "title": "MDN Web Docs",
+      "description": "Resources for developers, by developers.",
+      "tags": [
+        "docs",
+        "web",
+        "reference"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000003",
+      "favicon": "https://www.google.com/s2/favicons?domain=developer.mozilla.org&sz=64",
+      "sort": 15,
+      "createdAt": "2026-02-25T10:30:00.000Z",
+      "updatedAt": "2026-02-25T10:30:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000017",
+      "url": "https://www.youtube.com",
+      "title": "YouTube",
+      "description": "Share your videos with friends, family, and the world.",
+      "tags": [
+        "video",
+        "entertainment",
+        "learning"
+      ],
+      "collectionId": null,
+      "favicon": "https://www.google.com/s2/favicons?domain=youtube.com&sz=64",
+      "sort": 16,
+      "createdAt": "2026-02-26T15:00:00.000Z",
+      "updatedAt": "2026-02-26T15:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000018",
+      "url": "https://stackoverflow.com",
+      "title": "Stack Overflow",
+      "description": "Where developers learn, share, and build careers.",
+      "tags": [
+        "community",
+        "code",
+        "q&a"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000001",
+      "favicon": "https://www.google.com/s2/favicons?domain=stackoverflow.com&sz=64",
+      "sort": 17,
+      "createdAt": "2026-02-27T11:00:00.000Z",
+      "updatedAt": "2026-02-27T11:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000019",
+      "url": "https://www.smashingmagazine.com",
+      "title": "Smashing Magazine",
+      "description": "For web designers and developers — articles, books, and events.",
+      "tags": [
+        "design",
+        "reading",
+        "frontend"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000003",
+      "favicon": "https://www.google.com/s2/favicons?domain=smashingmagazine.com&sz=64",
+      "sort": 18,
+      "createdAt": "2026-02-27T16:00:00.000Z",
+      "updatedAt": "2026-02-27T16:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000020",
+      "url": "https://news.ycombinator.com",
+      "title": "Hacker News",
+      "description": "A social news website focusing on computer science and entrepreneurship.",
+      "tags": [
+        "news",
+        "tech",
+        "community"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000003",
+      "favicon": "https://www.google.com/s2/favicons?domain=news.ycombinator.com&sz=64",
+      "sort": 19,
+      "createdAt": "2026-02-28T08:00:00.000Z",
+      "updatedAt": "2026-02-28T08:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000021",
+      "url": "https://vitejs.dev",
+      "title": "Vite",
+      "description": "Next Generation Frontend Tooling — fast development and build tool.",
+      "tags": [
+        "build",
+        "dev",
+        "frontend"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000004",
+      "favicon": "https://www.google.com/s2/favicons?domain=vitejs.dev&sz=64",
+      "sort": 20,
+      "createdAt": "2026-02-28T14:00:00.000Z",
+      "updatedAt": "2026-02-28T14:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000022",
+      "url": "https://www.notion.so",
+      "title": "Notion",
+      "description": "One workspace for your notes, tasks, wikis, and databases.",
+      "tags": [
+        "productivity",
+        "notes",
+        "workspace"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000004",
+      "favicon": "https://www.google.com/s2/favicons?domain=notion.so&sz=64",
+      "sort": 21,
+      "createdAt": "2026-03-01T10:00:00.000Z",
+      "updatedAt": "2026-03-01T10:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000023",
+      "url": "https://anthropic.com",
+      "title": "Anthropic",
+      "description": "AI safety company — maker of the Claude AI assistant.",
+      "tags": [
+        "ai",
+        "safety",
+        "llm"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000005",
+      "favicon": "https://www.google.com/s2/favicons?domain=anthropic.com&sz=64",
+      "sort": 22,
+      "createdAt": "2026-03-02T11:00:00.000Z",
+      "updatedAt": "2026-03-02T11:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000024",
+      "url": "https://dnd-kit.com",
+      "title": "dnd kit",
+      "description": "A lightweight, performant, accessible drag and drop toolkit for React.",
+      "tags": [
+        "react",
+        "drag-drop",
+        "ui"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000001",
+      "favicon": "https://www.google.com/s2/favicons?domain=dnd-kit.com&sz=64",
+      "sort": 23,
+      "createdAt": "2026-03-03T09:00:00.000Z",
+      "updatedAt": "2026-03-03T09:00:00.000Z"
+    },
+    {
+      "id": "b0000000-0000-4000-a000-000000000025",
+      "url": "https://arc.net",
+      "title": "Arc Browser",
+      "description": "The browser that puts you in charge — a new kind of web browser.",
+      "tags": [
+        "browser",
+        "productivity",
+        "tools"
+      ],
+      "collectionId": "c0000000-0000-4000-a000-000000000004",
+      "favicon": "https://www.google.com/s2/favicons?domain=arc.net&sz=64",
+      "sort": 24,
+      "createdAt": "2026-03-04T10:00:00.000Z",
+      "updatedAt": "2026-03-04T10:00:00.000Z"
+    }
+  ]
+}
