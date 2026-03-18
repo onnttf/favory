@@ -127,7 +127,7 @@ export function NavCollections({
                         </ContextMenuTrigger>
                         <ContextMenuContent className="w-36">
                           <ContextMenuItem onClick={() => onEditCollection(child.id)}>
-                            <IconPencil />
+                            <IconPencil aria-hidden="true" />
                             <span>Edit</span>
                           </ContextMenuItem>
                           <ContextMenuSeparator />
@@ -135,7 +135,7 @@ export function NavCollections({
                             variant="destructive"
                             onClick={() => onDeleteCollection(child.id)}
                           >
-                            <IconTrash />
+                            <IconTrash aria-hidden="true" />
                             <span>Delete</span>
                           </ContextMenuItem>
                         </ContextMenuContent>

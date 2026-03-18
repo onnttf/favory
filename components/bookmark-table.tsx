@@ -25,7 +25,7 @@ declare module "@tanstack/react-table" {
 }
 
 import type { Bookmark, Collection } from "@/lib/types"
-import { getDomain } from "@/lib/utils"
+import { cn, getDomain } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { CollectionBadge } from "@/components/collection-badge"
@@ -47,14 +47,12 @@ import {
 } from "@/components/ui/table"
 import { Skeleton } from "@/components/ui/skeleton"
 
-
 interface BookmarkTableProps {
   bookmarks: Bookmark[]
   collections: Collection[]
   onEdit: (bookmark: Bookmark) => void
   onDelete: (id: string) => void
   onAdd?: () => void
-  hasMore: boolean
   loadingMore: boolean
   loadMore: () => void
   total: number
@@ -67,32 +65,17 @@ export function BookmarkTable({
   onEdit,
   onDelete,
   onAdd,
-  hasMore,
   loadingMore,
   loadMore,
   total,
   isFiltered = false,
 }: BookmarkTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([])
-  const sentinelRef = React.useRef<HTMLDivElement>(null)
 
   const collectionMap = React.useMemo(
     () => new Map(collections.map((c) => [c.id, c])),
     [collections]
   )
-
-  React.useEffect(() => {
-    const el = sentinelRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) loadMore()
-      },
-      { rootMargin: "200px" }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [loadMore])
 
   const columns: ColumnDef<Bookmark>[] = React.useMemo(
     () => [
@@ -104,7 +87,7 @@ export function BookmarkTable({
           return (
             <div className="flex items-center gap-2 min-w-0">
               <Avatar size="sm" className="rounded">
-                <AvatarImage src={b.favicon} alt="" loading="lazy" />
+                <AvatarImage src={b.favicon} loading="lazy" width={24} height={24} />
                 <AvatarFallback className="rounded text-xs font-semibold text-white bg-muted-foreground/40">
                   {b.title.charAt(0).toUpperCase()}
                 </AvatarFallback>
@@ -113,7 +96,7 @@ export function BookmarkTable({
                 href={b.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium text-foreground hover:underline truncate max-w-50 block"
+                className="font-medium text-foreground hover:underline truncate max-w-48 block"
               >
                 {b.title}
               </a>
@@ -192,7 +175,7 @@ export function BookmarkTable({
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="flex size-11 text-muted-foreground data-[state=open]:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                className="flex size-11 text-muted-foreground data-[state=open]:bg-muted hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring focus-visible:ring-offset-2"
                 size="icon"
               >
                 <IconDotsVertical />
@@ -242,10 +225,10 @@ export function BookmarkTable({
   if (bookmarks.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center gap-4">
-        <div className="size-14 rounded-full bg-muted flex items-center justify-center">
+        <div className="size-14 rounded-full bg-primary/10 flex items-center justify-center">
           {isFiltered
-            ? <IconSearch className="size-6 text-muted-foreground" />
-            : <IconBookmark className="size-6 text-muted-foreground" />
+            ? <IconSearch className="size-6 text-primary" />
+            : <IconBookmark className="size-6 text-primary" />
           }
         </div>
         <div className="flex flex-col gap-1">
@@ -268,77 +251,69 @@ export function BookmarkTable({
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="overflow-x-auto rounded-lg border">
-        <Table>
-          <TableHeader className="sticky top-0 z-20 bg-muted">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    colSpan={header.colSpan}
-                    className={header.column.columnDef.meta?.className}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {visibleRows.map((row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className={cell.column.columnDef.meta?.className}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-            {loadingMore &&
-              Array.from({ length: 3 }).map((_, i) => (
-                <TableRow key={`skeleton-${i}`}>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Skeleton className="size-6 rounded shrink-0" />
-                      <Skeleton className="h-4 w-40" />
-                    </div>
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    <Skeleton className="h-4 w-28" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-5 w-20 rounded-full" />
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    <Skeleton className="h-5 w-16 rounded-full" />
-                  </TableCell>
-                  <TableCell className="hidden lg:table-cell">
-                    <Skeleton className="h-4 w-16" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="size-8 rounded-md" />
-                  </TableCell>
-                </TableRow>
+    <div className="overflow-hidden rounded-xl ring-1 ring-foreground/10">
+      <Table>
+        <TableHeader className="bg-muted sticky top-0 z-10">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <TableHead
+                  key={header.id}
+                  colSpan={header.colSpan}
+                  className={cn("px-4", header.column.columnDef.meta?.className)}
+                >
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                </TableHead>
               ))}
-          </TableBody>
-        </Table>
-      </div>
-
-      <div ref={sentinelRef} className="h-4" style={{ overflowAnchor: "none" }} />
-
-      <p className="text-center text-xs text-muted-foreground py-1">
-        {bookmarks.length} / {total}
-      </p>
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
+          {visibleRows.map((row) => (
+            <TableRow key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <TableCell
+                  key={cell.id}
+                  className={cn("px-4", cell.column.columnDef.meta?.className)}
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+          {loadingMore &&
+            Array.from({ length: 3 }).map((_, i) => (
+              <TableRow key={`skeleton-${i}`}>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <Skeleton className="size-6 rounded shrink-0" />
+                    <Skeleton className="h-4 w-40" />
+                  </div>
+                </TableCell>
+                <TableCell className="hidden md:table-cell">
+                  <Skeleton className="h-4 w-28" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-5 w-20 rounded-full" />
+                </TableCell>
+                <TableCell className="hidden md:table-cell">
+                  <Skeleton className="h-5 w-16 rounded-full" />
+                </TableCell>
+                <TableCell className="hidden lg:table-cell">
+                  <Skeleton className="h-4 w-16" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="size-8 rounded-md" />
+                </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
     </div>
   )
 }

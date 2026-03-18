@@ -4,7 +4,7 @@ import * as React from "react"
 import { toast } from "sonner"
 
 import type { Collection } from "@/lib/types"
-import { useBookmarks, WORKER_URL } from "@/lib/bookmark-store"
+import { useBookmarks, WORKER_URL, refreshCollections } from "@/lib/bookmark-store"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -107,6 +107,7 @@ export function CollectionForm({
             if (!res.ok) throw new Error("Failed to update")
             const updated: Collection = await res.json()
             dispatch({ type: "UPDATE_COLLECTION", collection: updated })
+            await refreshCollections(dispatch, state.collectionFilter)
             onOpenChange(false)
           }),
           {
@@ -121,6 +122,7 @@ export function CollectionForm({
             if (!res.ok) throw new Error("Failed to create")
             const created: Collection = await res.json()
             dispatch({ type: "ADD_COLLECTION", collection: created })
+            await refreshCollections(dispatch, state.collectionFilter)
             onOpenChange(false)
           }),
           {
@@ -196,7 +198,7 @@ export function CollectionForm({
                 <button
                   key={c}
                   type="button"
-                  className="size-7 rounded-full border-2 transition-all"
+                  className="size-7 rounded-full border-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   style={{
                     backgroundColor: c,
                     borderColor: color === c ? "var(--foreground)" : "transparent",
@@ -204,14 +206,16 @@ export function CollectionForm({
                   }}
                   onClick={() => setColor(c)}
                   aria-label={`Select color ${c}`}
+                  aria-pressed={color === c}
                 />
               ))}
               <input
                 type="color"
                 value={color}
                 onChange={(e) => setColor(e.target.value)}
-                className="size-7 cursor-pointer rounded-full border border-input"
+                className="size-7 cursor-pointer rounded-full border border-input focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 title="Custom color"
+                aria-label="Custom color"
               />
             </div>
           </div>

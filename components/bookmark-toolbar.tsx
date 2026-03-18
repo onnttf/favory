@@ -10,6 +10,7 @@ import {
   ToggleGroup,
   ToggleGroupItem,
 } from "@/components/ui/toggle-group"
+import { cn } from "@/lib/utils"
 
 interface BookmarkToolbarProps {
   onAddBookmark: () => void
@@ -27,7 +28,8 @@ export function BookmarkToolbar({ onAddBookmark }: BookmarkToolbarProps) {
   }, [inputValue, dispatch])
 
   return (
-    <div className="flex items-center gap-2 px-4 lg:px-6">
+    <div className="flex items-center gap-2 px-4 lg:px-6 py-2 shrink-0" role="toolbar" aria-label="Bookmark controls">
+      <h2 className="sr-only">Search and filters</h2>
       <div className="relative flex-1 max-w-sm">
         <label htmlFor="bookmark-search" className="sr-only">Search bookmarks</label>
         <IconSearch className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />

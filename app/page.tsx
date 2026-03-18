@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import { AppSidebar } from "@/components/app-sidebar"
-import { BookmarkDashboardContent } from "@/components/bookmark-dashboard-content"
+import { BookmarkView } from "@/components/bookmark-view"
 import { SiteHeader } from "@/components/site-header"
 import {
   SidebarInset,
@@ -30,12 +30,9 @@ export default function Page() {
         <AppSidebar variant="inset" />
         <SidebarInset>
           <SiteHeader />
-          <main id="main-content" className="flex flex-1 flex-col">
-            <div className="@container/main flex flex-1 flex-col gap-2">
-              <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-                <BookmarkDashboardContent />
-              </div>
-            </div>
+          <main id="main-content" className="flex flex-col h-[calc(100vh-var(--header-height))] overflow-hidden">
+            <h1 className="sr-only">Bookmarks</h1>
+            <BookmarkView />
           </main>
         </SidebarInset>
       </SidebarProvider>

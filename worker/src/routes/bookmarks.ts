@@ -154,15 +154,17 @@ export async function handleBookmarkQuery(
     )
     filterParams.push(`%${q}%`, `%${q}%`, `%${q}%`)
   }
-  for (const tag of tags) {
+  // 标签过滤：并集（满足任一标签即可）
+  if (tags.length > 0) {
+    const tagPlaceholders = tags.map(() => "?").join(",")
     whereParts.push(
-      `EXISTS (
-         SELECT 1 FROM bookmark_tag bt_f
-         INNER JOIN tag t_f ON t_f.tag_id = bt_f.tag_id AND t_f.deleted_at IS NULL
-         WHERE bt_f.bookmark_id = b.bookmark_id AND bt_f.deleted_at IS NULL AND t_f.name = ?
+      `b.bookmark_id IN (
+         SELECT bt.bookmark_id FROM bookmark_tag bt
+         INNER JOIN tag t ON t.tag_id = bt.tag_id AND t.deleted_at IS NULL
+         WHERE bt.deleted_at IS NULL AND t.name IN (${tagPlaceholders})
        )`
     )
-    filterParams.push(tag)
+    filterParams.push(...tags)
   }
 
   const where = whereParts.join(" AND ")

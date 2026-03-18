@@ -3,7 +3,7 @@
 import * as React from "react"
 import type { Bookmark, Collection, Tag } from "./types"
 
-export const WORKER_URL = process.env.NEXT_PUBLIC_WORKER_URL ?? ""
+export const WORKER_URL = (process.env.NEXT_PUBLIC_WORKER_URL ?? "").replace(/\/$/, "")
 
 const PAGE_SIZE = 20
 
@@ -13,6 +13,16 @@ const post = (path: string, body: Record<string, unknown> = {}) =>
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   }).then((r) => r.json())
+
+// Refresh collections and tags after CRUD operations
+export async function refreshCollections(dispatch: React.Dispatch<Action>, collectionId?: string | null) {
+  const [colRes, tagRes] = await Promise.all([
+    post("/collection/list", {}),
+    post("/tag/list", { collectionId: collectionId || undefined }),
+  ])
+  dispatch({ type: "REFRESH_COLLECTIONS", collections: colRes.collections })
+  dispatch({ type: "UPDATE_TAGS", tags: tagRes.tags })
+}
 
 // ─── State ────────────────────────────────────────────────────────────────────
 
@@ -95,6 +105,8 @@ type Action =
   | { type: "SET_COLLECTION_FILTER"; collectionId: string | null }
   | { type: "TOGGLE_TAG_FILTER"; tag: string }
   | { type: "SET_VIEW_MODE"; mode: "grid" | "table" }
+  | { type: "UPDATE_TAGS"; tags: Tag[] }
+  | { type: "REFRESH_COLLECTIONS"; collections: Collection[] }
 
 function reducer(state: BookmarkState, action: Action): BookmarkState {
   switch (action.type) {
@@ -212,6 +224,10 @@ function reducer(state: BookmarkState, action: Action): BookmarkState {
       }
     case "SET_VIEW_MODE":
       return { ...state, viewMode: action.mode }
+    case "UPDATE_TAGS":
+      return { ...state, tags: action.tags }
+    case "REFRESH_COLLECTIONS":
+      return { ...state, collections: action.collections }
     default:
       return state
   }
@@ -252,13 +268,14 @@ export function BookmarkProvider({ children }: { children: React.ReactNode }) {
   React.useEffect(() => {
     Promise.all([
       post("/bookmark/query", { page: 1, pageSize: PAGE_SIZE }),
-      post("/sidebar/data", {}),
-    ]).then(([bmRes, sidebarRes]) => {
+      post("/collection/list", {}),
+      post("/tag/list", {}),
+    ]).then(([bmRes, colRes, tagRes]) => {
       dispatch({
         type: "INIT_DONE",
         bookmarks: bmRes.data,
-        collections: sidebarRes.collections,
-        tags: sidebarRes.tags,
+        collections: colRes.collections,
+        tags: tagRes.tags,
         total: bmRes.total,
         globalTotal: bmRes.total,
       })
@@ -281,12 +298,21 @@ export function BookmarkProvider({ children }: { children: React.ReactNode }) {
     }).then((res) => {
       dispatch({ type: "RESET_BOOKMARKS", bookmarks: res.data, total: res.total })
     })
-  }, [state.search, state.collectionFilter, state.tagFilters]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state.search, state.collectionFilter, state.tagFilters])  
 
-  // Load next page
+  // Refresh tags when collection filter changes
+  React.useEffect(() => {
+    if (!initializedRef.current) return
+    post("/tag/list", { collectionId: state.collectionFilter || undefined }).then((res) => {
+      dispatch({ type: "UPDATE_TAGS", tags: res.tags })
+    })
+  }, [state.collectionFilter])
+
+  // Load next page - only trigger when not already loading
   const loadMore = React.useCallback(() => {
     const s = stateRef.current
-    if (s.bookmarks.length >= s.total || s.loadingMore || s.loading) return
+    // Prevent if: no more data, already loading
+    if (s.bookmarks.length >= s.total || s.loadingMore) return
     dispatch({ type: "SET_LOADING_MORE", value: true })
     const nextPage = s.page + 1
     post("/bookmark/query", {
@@ -296,7 +322,13 @@ export function BookmarkProvider({ children }: { children: React.ReactNode }) {
       page: nextPage,
       pageSize: PAGE_SIZE,
     }).then((res) => {
-      dispatch({ type: "APPEND_BOOKMARKS", bookmarks: res.data, page: nextPage })
+      if (res.data && res.data.length > 0) {
+        dispatch({ type: "APPEND_BOOKMARKS", bookmarks: res.data, page: nextPage })
+      } else {
+        dispatch({ type: "SET_LOADING_MORE", value: false })
+      }
+    }).catch(() => {
+      dispatch({ type: "SET_LOADING_MORE", value: false })
     })
   }, [])
 

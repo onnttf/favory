@@ -184,6 +184,8 @@ export function BookmarkForm({ open, onOpenChange, bookmark }: BookmarkFormProps
             <Input
               id="bm-url"
               type="url"
+              name="url"
+              autoComplete="url"
               placeholder="https://example.com"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
@@ -198,6 +200,8 @@ export function BookmarkForm({ open, onOpenChange, bookmark }: BookmarkFormProps
             </Label>
             <Input
               id="bm-title"
+              name="title"
+              autoComplete="off"
               placeholder="Page title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -218,13 +222,14 @@ export function BookmarkForm({ open, onOpenChange, bookmark }: BookmarkFormProps
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label>Collection</Label>
+            <Label id="bm-collection-label">Collection</Label>
             <Popover open={collectionOpen} onOpenChange={setCollectionOpen}>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
                   role="combobox"
                   aria-expanded={collectionOpen}
+                  aria-labelledby="bm-collection-label"
                   className="w-full justify-between font-normal"
                 >
                   <span className="truncate text-sm">
@@ -282,12 +287,12 @@ export function BookmarkForm({ open, onOpenChange, bookmark }: BookmarkFormProps
 
           <div className="flex flex-col gap-2">
             <Label htmlFor="bm-tags">Tags</Label>
-            <div className="flex flex-wrap gap-1 min-h-8">
+            <div className="flex flex-wrap items-center gap-2 min-h-9 px-3 py-2 rounded-md border bg-background">
               {tags.map((tag) => (
                 <Badge
                   key={tag}
                   variant="secondary"
-                  className="cursor-pointer"
+                  className="cursor-pointer shrink-0"
                   role="button"
                   tabIndex={0}
                   aria-label={`Remove tag: ${tag}`}
@@ -302,20 +307,21 @@ export function BookmarkForm({ open, onOpenChange, bookmark }: BookmarkFormProps
                   {tag} ×
                 </Badge>
               ))}
+              <input
+                id="bm-tags"
+                className="flex-1 min-w-24 bg-transparent outline-none text-sm placeholder:text-muted-foreground"
+                placeholder={tags.length === 0 ? "Add a tag and press Enter" : ""}
+                value={tagsInput}
+                onChange={(e) => setTagsInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault()
+                    addTag(tagsInput)
+                  }
+                }}
+                onBlur={() => tagsInput && addTag(tagsInput)}
+              />
             </div>
-            <Input
-              id="bm-tags"
-              placeholder="Add a tag and press Enter"
-              value={tagsInput}
-              onChange={(e) => setTagsInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault()
-                  addTag(tagsInput)
-                }
-              }}
-              onBlur={() => tagsInput && addTag(tagsInput)}
-            />
             <p className="text-xs text-muted-foreground">
               Press Enter to add. Click to remove.
             </p>

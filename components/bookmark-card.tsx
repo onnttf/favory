@@ -1,9 +1,9 @@
 "use client"
 
+import * as React from "react"
 import { IconExternalLink, IconPencil, IconTrash } from "@tabler/icons-react"
 
 import type { Bookmark, Collection } from "@/lib/types"
-import { getDomain } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { CollectionBadge } from "@/components/collection-badge"
@@ -24,7 +24,7 @@ interface BookmarkCardProps {
 }
 
 
-export function BookmarkCard({
+export const BookmarkCard = React.memo(function BookmarkCard({
   bookmark,
   collection,
   onEdit,
@@ -33,14 +33,15 @@ export function BookmarkCard({
 }: BookmarkCardProps) {
   return (
     <Card
-      className="group relative flex flex-col transition-all duration-200 ease-out hover:shadow-md hover:border-primary/30 animate-[card-enter_0.3s_ease-out_forwards]"
+      size="sm"
+      className="group relative flex flex-col transition-[box-shadow,border-color] duration-200 ease-out hover:shadow-md hover:border-primary/30 animate-[card-enter_0.3s_ease-out_forwards]"
       style={{ animationDelay: `${Math.min(index * 50, 400)}ms`, opacity: 0 }}
     >
-      <CardHeader className="flex flex-row items-start gap-3 pb-2">
-        <Avatar className="rounded-md size-8 shrink-0">
-          <AvatarImage src={bookmark.favicon} alt="" loading="lazy" />
+      <CardHeader className="flex flex-row items-center gap-3 pb-2">
+        <Avatar className="size-6 shrink-0">
+          <AvatarImage src={bookmark.favicon}  loading="lazy" />
           <AvatarFallback
-            className="rounded-md text-white text-sm font-semibold"
+            className="text-white text-xs font-semibold"
             style={{ backgroundColor: collection?.color ?? "hsl(var(--muted-foreground) / 0.4)" }}
           >
             {bookmark.title.charAt(0).toUpperCase()}
@@ -51,19 +52,16 @@ export function BookmarkCard({
             href={bookmark.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="line-clamp-1 font-medium text-foreground hover:underline focus-visible:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm"
+            className="line-clamp-1 font-medium text-foreground hover:underline focus-visible:underline focus-visible:ring-[3px] focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm"
           >
             {bookmark.title}
           </a>
-          <p className="text-xs text-muted-foreground truncate">
-            {getDomain(bookmark.url)}
-          </p>
         </div>
         <div className="flex gap-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 [@media(pointer:coarse)]:opacity-100 transition-opacity shrink-0">
           <Button
             variant="ghost"
             size="icon"
-            className="size-11 hover:bg-accent/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="size-11 hover:bg-accent/80 focus-visible:ring-[3px] focus-visible:ring-ring focus-visible:ring-offset-2"
             onClick={() => onEdit(bookmark)}
           >
             <IconPencil className="size-4" />
@@ -72,7 +70,7 @@ export function BookmarkCard({
           <Button
             variant="ghost"
             size="icon"
-            className="size-11 text-destructive hover:bg-destructive/10 focus-visible:ring-2 focus-visible:ring-destructive focus-visible:ring-offset-2"
+            className="size-11 text-destructive hover:bg-destructive/10 focus-visible:ring-[3px] focus-visible:ring-destructive focus-visible:ring-offset-2"
             onClick={() => onDelete(bookmark.id)}
           >
             <IconTrash className="size-4" />
@@ -116,11 +114,11 @@ export function BookmarkCard({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Open ${bookmark.title} in new tab`}
-          className="ml-auto opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 [@media(pointer:coarse)]:opacity-100 transition-opacity p-1.5 -m-1.5 rounded-md hover:bg-accent/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
+          className="ml-auto opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 [@media(pointer:coarse)]:opacity-100 transition-opacity p-1.5 -m-1.5 rounded-md hover:bg-accent/80 focus-visible:ring-[3px] focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           <IconExternalLink aria-hidden="true" className="size-4 text-muted-foreground" />
         </a>
       </CardFooter>
     </Card>
   )
-}
+})

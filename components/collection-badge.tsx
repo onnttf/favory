@@ -1,3 +1,4 @@
+import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 
@@ -7,7 +8,7 @@ interface CollectionBadgeProps {
   className?: string
 }
 
-export function CollectionBadge({ name, color, className }: CollectionBadgeProps) {
+export const CollectionBadge = React.memo(function CollectionBadge({ name, color, className }: CollectionBadgeProps) {
   return (
     <Badge variant="secondary" className={cn("gap-1", className)}>
       <div
@@ -18,4 +19,4 @@ export function CollectionBadge({ name, color, className }: CollectionBadgeProps
       {name}
     </Badge>
   )
-}
+})

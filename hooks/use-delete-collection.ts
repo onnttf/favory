@@ -3,10 +3,10 @@
 import * as React from "react"
 import { toast } from "sonner"
 
-import { useBookmarks, WORKER_URL } from "@/lib/bookmark-store"
+import { useBookmarks, WORKER_URL, refreshCollections } from "@/lib/bookmark-store"
 
 export function useDeleteCollection() {
-  const { dispatch } = useBookmarks()
+  const { state, dispatch } = useBookmarks()
   const [deleteId, setDeleteId] = React.useState<string | null>(null)
 
   function onDelete(id: string) {
@@ -27,6 +27,7 @@ export function useDeleteCollection() {
         if (!res.ok) throw new Error("Failed to delete")
         const { parentId } = await res.json()
         dispatch({ type: "DELETE_COLLECTION", id, parentId: parentId ?? null })
+        await refreshCollections(dispatch, state.collectionFilter)
       }),
       {
         loading: "Deleting collection...",

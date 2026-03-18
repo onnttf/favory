@@ -19,25 +19,57 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { ArrowUpIcon } from "lucide-react";
 
-export function BookmarkDashboardContent() {
+export function BookmarkView() {
   const { state, dispatch, hasMore, loadMore } = useBookmarks();
   const loadingMore = state.loadingMore;
   const isFiltered = !!(state.search || state.collectionFilter || state.tagFilters.length);
 
-  const [showScrollTop, setShowScrollTop] = React.useState(false);
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const sentinelRef = React.useRef<HTMLDivElement>(null);
+  const isLoadingRef = React.useRef(false);
+  const mountedRef = React.useRef(false);
 
   React.useEffect(() => {
-    function onScroll() {
-      setShowScrollTop(window.scrollY > 300);
-    }
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    mountedRef.current = true;
   }, []);
+
+  React.useEffect(() => {
+    if (!scrollRef.current || !sentinelRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (
+          entry.isIntersecting &&
+          hasMore &&
+          !loadingMore &&
+          !isLoadingRef.current &&
+          mountedRef.current
+        ) {
+          isLoadingRef.current = true;
+          loadMore();
+        }
+      },
+      {
+        root: scrollRef.current,
+        rootMargin: "100px",
+        threshold: 0,
+      }
+    );
+
+    observer.observe(sentinelRef.current);
+
+    return () => observer.disconnect();
+  }, [hasMore, loadingMore, loadMore]);
+
+  React.useEffect(() => {
+    if (!loadingMore) {
+      isLoadingRef.current = false;
+    }
+  }, [loadingMore]);
 
   const [bookmarkFormOpen, setBookmarkFormOpen] = React.useState(false);
   const [editingBookmark, setEditingBookmark] = React.useState<Bookmark | null>(
@@ -87,15 +119,21 @@ export function BookmarkDashboardContent() {
   if (state.loading && state.bookmarks.length === 0) {
     return (
       <>
-        <div className="flex items-center gap-2 px-4 lg:px-6">
+        <h2 className="sr-only">Loading bookmarks</h2>
+        <div className="flex items-center gap-2 px-4 lg:px-6 py-2 shrink-0">
           <Skeleton className="h-9 flex-1 max-w-sm rounded-lg" />
           <Skeleton className="h-9 w-[72px] rounded-lg" />
           <Skeleton className="h-9 w-28 rounded-lg" />
         </div>
-        <div className="grid grid-cols-1 gap-4 px-4 lg:px-6 @sm/main:grid-cols-2 @lg/main:grid-cols-3 @2xl/main:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <Skeleton key={i} className="h-40 w-full rounded-xl" />
-          ))}
+        <div className="h-0.5 mx-4 lg:mx-6 rounded-full overflow-hidden shrink-0">
+          <div className="h-full w-1/3 bg-primary rounded-full animate-[shimmer_1.2s_ease-in-out_infinite] [will-change:transform]" />
+        </div>
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 lg:px-6 py-4">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <Skeleton key={i} className="h-28 w-full rounded-lg" />
+            ))}
+          </div>
         </div>
       </>
     );
@@ -105,28 +143,26 @@ export function BookmarkDashboardContent() {
     <>
       <BookmarkToolbar onAddBookmark={handleAddBookmark} />
 
-      {/* Screen-reader loading announcement */}
-      <p
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
+      <div
+        className={cn(
+          "h-0.5 mx-4 lg:mx-6 rounded-full overflow-hidden transition-opacity duration-200 shrink-0",
+          state.loading && state.bookmarks.length > 0 ? "opacity-100" : "opacity-0"
+        )}
       >
-        {state.loading ? "Loading bookmarks…" : ""}
-      </p>
-
-      {/* Refresh indicator — only shown when re-fetching with existing data */}
-      <div className={cn(
-        "h-0.5 mx-4 lg:mx-6 rounded-full overflow-hidden transition-opacity duration-150",
-        state.loading && state.bookmarks.length > 0 ? "opacity-100" : "opacity-0"
-      )}>
         <div className="h-full w-1/3 bg-primary rounded-full animate-[shimmer_1.2s_ease-in-out_infinite] [will-change:transform]" />
       </div>
 
-      <div className={cn(
-        "px-4 lg:px-6 transition-opacity duration-150",
-        state.loading && state.bookmarks.length > 0 && "opacity-50 pointer-events-none"
-      )}>
+      <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+        {state.loading ? "Loading bookmarks…" : ""}
+      </p>
+
+      <div
+        className={cn(
+          "flex-1 min-h-0 overflow-y-auto px-4 lg:px-6 py-4 transition-opacity duration-200",
+          state.loading && state.bookmarks.length > 0 && "opacity-50 pointer-events-none"
+        )}
+        ref={scrollRef}
+      >
         {state.viewMode === "grid" ? (
           <BookmarkGrid
             bookmarks={state.bookmarks}
@@ -147,16 +183,16 @@ export function BookmarkDashboardContent() {
             onEdit={handleEditBookmark}
             onDelete={handleDeleteBookmark}
             onAdd={handleAddBookmark}
-            hasMore={hasMore}
             loadingMore={loadingMore}
             loadMore={loadMore}
             total={state.total}
             isFiltered={isFiltered}
           />
         )}
+
+        <div ref={sentinelRef} className="h-4" />
       </div>
 
-      {/* Bookmark CRUD form */}
       <BookmarkForm
         open={bookmarkFormOpen}
         onOpenChange={(open) => {
@@ -166,7 +202,6 @@ export function BookmarkDashboardContent() {
         bookmark={editingBookmark}
       />
 
-      {/* Delete bookmark confirmation */}
       <AlertDialog
         open={!!deleteBookmarkId}
         onOpenChange={(open) => !open && setDeleteBookmarkId(null)}
@@ -186,19 +221,6 @@ export function BookmarkDashboardContent() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
-      {/* Scroll to top */}
-      {showScrollTop && (
-        <Button
-          variant="outline"
-          size="icon"
-          className="fixed bottom-6 right-6 z-50 rounded-full shadow-md"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          aria-label="Scroll to top"
-        >
-          <ArrowUpIcon className="h-4 w-4" />
-        </Button>
-      )}
     </>
   );
 }

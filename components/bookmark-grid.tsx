@@ -33,32 +33,18 @@ export function BookmarkGrid({
   total,
   isFiltered = false,
 }: BookmarkGridProps) {
-  const sentinelRef = React.useRef<HTMLDivElement>(null)
   const collectionMap = React.useMemo(
     () => new Map(collections.map((c) => [c.id, c])),
     [collections]
   )
 
-  React.useEffect(() => {
-    const el = sentinelRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) loadMore()
-      },
-      { rootMargin: "200px" }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [loadMore])
-
   if (bookmarks.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center gap-4">
-        <div className="size-14 rounded-full bg-muted flex items-center justify-center">
+        <div className="size-14 rounded-full bg-primary/10 flex items-center justify-center">
           {isFiltered
-            ? <IconSearch className="size-6 text-muted-foreground" />
-            : <IconBookmark className="size-6 text-muted-foreground" />
+            ? <IconSearch className="size-6 text-primary" />
+            : <IconBookmark className="size-6 text-primary" />
           }
         </div>
         <div className="flex flex-col gap-1">
@@ -81,8 +67,11 @@ export function BookmarkGrid({
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-1 gap-4 @sm/main:grid-cols-2 @lg/main:grid-cols-3 @2xl/main:grid-cols-4">
+    <div>
+      <div
+        className="grid grid-cols-1 gap-3 p-3 -m-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+        style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}
+      >
         {bookmarks.map((bookmark, i) => (
           <BookmarkCard
             key={bookmark.id}
@@ -99,15 +88,9 @@ export function BookmarkGrid({
         ))}
         {loadingMore &&
           Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-40 w-full rounded-xl" />
+            <Skeleton key={i} className="h-28 w-full rounded-lg" />
           ))}
       </div>
-
-      <div ref={sentinelRef} className="h-4" style={{ overflowAnchor: "none" }} />
-
-      <p className="text-center text-xs text-muted-foreground py-1">
-        {bookmarks.length} / {total}
-      </p>
     </div>
   )
 }
